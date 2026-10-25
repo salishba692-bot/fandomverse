@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}FandomVerse - The Ultimate Fandom Community Platform | Anime, Gaming, K-Pop & Marvel{% endblock %}
+{% block meta_description %}Welcome to FandomVerse, the universe where fandoms unite! Created by Alishba Shahid. Connect with fans of Anime, K-Pop, Video Games, Comics, Movies & Cosplay. Join discussions, share theories, and celebrate pop culture.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-badge-pill">
+            <span class="hero-badge-dot"></span>
+            <span>The Next-Gen Pop Culture Community</span>
+        </div>
+
+        <h1 class="hero-title">
+            Where Every Passion Finds Its <span class="gradient-text">Universe</span> 🌌
+        </h1>
+
+        <p class="hero-description">
+            Welcome to FandomVerse — the ultimate interactive gathering place for devotees of Anime, Gaming, Cinema, K-Pop, Comics, Cosplay, and Fantasy Literature. Founded by <strong>Alishba Shahid</strong>, FandomVerse was conceived to empower fans worldwide with real-time conversations, deep-dive lore analysis, community fan art showcases, and collaborative worldbuilding.
+        </p>
+
+        <div class="hero-cta-group">
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('signup') }}" class="btn btn-gradient btn-lg glow-btn">
+                    <i class="fas fa-rocket"></i> Join FandomVerse Free
+                </a>
+                <a href="{{ url_for('explore') }}" class="btn btn-outline btn-lg">
+                    <i class="fas fa-compass"></i> Explore All Fandoms
+                </a>
+            {% else %}
+                <a href="{{ url_for('create_post') }}" class="btn btn-gradient btn-lg">
+                    <i class="fas fa-pen-fancy"></i> Share Your Theory or Creation
+                </a>
+                <a href="{{ url_for('explore') }}" class="btn btn-outline btn-lg">
+                    <i class="fas fa-users"></i> Discover New Arenas
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="hero-creator-plug">
+            <i class="fas fa-sparkles text-warning"></i>
+            <span>Architecture &amp; Design by <strong>Alishba Shahid</strong> &bull; Need assistance? Email <a href="mailto:marinacaipher09@gmail.com" class="text-primary">marinacaipher09@gmail.com</a></span>
+        </div>
+    </div>
+</section>
+
+<!-- Animated Live Stats Bar -->
+<section class="stats-bar-wrapper">
+    <div class="container">
+        <div class="stats-bar-grid">
+            <div class="stat-card">
+                <span class="stat-icon">👥</span>
+                <span class="stat-number" data-count="{{ stats.users }}">{{ stats.users }}</span>
+                <span class="stat-label">Enthusiastic Members</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🌟</span>
+                <span class="stat-number" data-count="{{ stats.fandoms }}">{{ stats.fandoms }}</span>
+                <span class="stat-label">Active Fandom Realms</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">📝</span>
+                <span class="stat-number" data-count="{{ stats.posts }}">{{ stats.posts }}</span>
+                <span class="stat-label">Community Threads</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">⚡</span>
+                <span class="stat-number" data-count="98500">98,500</span>
+                <span class="stat-label">Monthly Interactions</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fandom Categories Quick Bar -->
+<section class="section-wrapper" style="padding-top: 1rem; padding-bottom: 2rem;">
+    <div class="container">
+        <div class="category-pills-bar">
+            <a href="{{ url_for('explore') }}" class="cat-pill active">
+                <span>🌈</span> All Universes
+            </a>
+            {% for cat in categories %}
+            <a href="{{ url_for('explore', category=cat.slug) }}" class="cat-pill">
+                <span>{{ cat.icon }}</span> {{ cat.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Fandoms Showcase -->
+<section class="section-wrapper">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <span class="section-tag">Featured Realms</span>
+                <h2 class="section-title">Trending Fandoms Right Now 🔥</h2>
+                <p class="section-subtitle">Dive into vibrant hubs of discussion, theories, fan art, and cosplay with thousands of devoted fans.</p>
+            </div>
+            <a href="{{ url_for('explore') }}" class="btn btn-outline btn-sm">
+                View All {{ stats.fandoms }} Fandoms <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="fandom-grid">
+            {% for fandom in featured_fandoms %}
+            <div class="fandom-card">
+                <div class="fandom-card-cover">
+                    <img src="{{ url_for('static', filename='images/default-fandom.svg') }}" alt="{{ fandom.name }}" class="fandom-cover-img" loading="lazy">
+                    <span class="fandom-category-badge">{{ fandom.category | capitalize }}</span>
+                    <div class="fandom-card-avatar">
+                        {{ fandom.icon_emoji }}
+                    </div>
+                </div>
+                <div class="fandom-card-body">
+                    <h3 class="fandom-card-title">{{ fandom.name }}</h3>
+                    <p class="fandom-card-desc">{{ fandom.description }}</p>
+                    <div class="fandom-card-footer">
+                        <span class="fandom-members-count">
+                            <i class="fas fa-users"></i> {{ '{:,}'.format(fandom.member_count) }} fans
+                        </span>
+                        <a href="{{ url_for('fandom_detail', slug=fandom.slug) }}" class="btn btn-sm btn-gradient">
+                            Enter Arena
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Trending Discussions Section -->
+<section class="section-wrapper" style="background: rgba(11, 10, 29, 0.4);">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <span class="section-tag">Hot Topics</span>
+                <h2 class="section-title">Trending Discussions &amp; Theories 💬</h2>
+                <p class="section-subtitle">Read, react, and debate the latest lore breakthroughs, cosplay showcases, and reviews posted by our members.</p>
+            </div>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('create_post') }}" class="btn btn-gradient btn-sm">
+                    <i class="fas fa-plus"></i> New Thread
+                </a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="btn btn-outline btn-sm">
+                    Sign Up to Post <i class="fas fa-arrow-right"></i>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="posts-grid">
+            {% for post in trending_posts %}
+            <article class="post-card">
+                <div class="post-card-header">
+                    <a href="{{ url_for('fandom_detail', slug=post.fandom.slug) }}" class="post-fandom-link">
+                        <span>{{ post.fandom.icon_emoji }}</span> {{ post.fandom.name }}
+                    </a>
+                    <span class="post-type-badge badge-{{ post.post_type }}">{{ post.post_type | capitalize }}</span>
+                </div>
+
+                <h3 class="post-card-title">
+                    <a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a>
+                </h3>
+
+                <p class="post-card-preview">{{ post.content }}</p>
+
+                <div class="post-card-author-bar">
+                    <div class="author-info">
+                        <img src="{{ post.author.avatar_url or url_for('static', filename='images/default-avatar.svg') }}" alt="{{ post.author.display_name or post.author.username }}" class="author-avatar" loading="lazy">
+                        <div>
+                            <span class="author-name">{{ post.author.display_name or post.author.username }}</span>
+                        </div>
+                    </div>
+
+                    <div class="post-metrics">
+                        <span class="metric-item" title="Views"><i class="fas fa-eye"></i> {{ post.views }}</span>
+                        <button class="like-btn {% if current_user.is_authenticated and post.likes.filter_by(user_id=current_user.id).first() %}liked{% endif %}" data-post-id="{{ post.id }}" aria-label="Like post">
+                            <i class="{% if current_user.is_authenticated and post.likes.filter_by(user_id=current_user.id).first() %}fas{% else %}far{% endif %} fa-heart"></i>
+                            <span class="like-count">{{ post.like_count }}</span>
+                        </button>
+                        <a href="{{ url_for('post_detail', post_id=post.id) }}" class="metric-item text-muted" title="Comments">
+                            <i class="fas fa-comment"></i> {{ post.comment_count }}
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why FandomVerse Platform Highlights -->
+<section class="section-wrapper">
+    <div class="container">
+        <div class="section-header-centered">
+            <span class="section-tag">Engineered for Fans</span>
+            <h2 class="section-title">Why FandomVerse is Different 🚀</h2>
+            <p class="section-subtitle">Built from the ground up with high performance, dedicated security, and community-first features designed by <strong>Alishba Shahid</strong>.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+            <div class="stat-card" style="text-align: left; padding: 2rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">🌐</div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">All Fandoms in Harmony</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">No more juggling ten different forums or subreddits. From Jujutsu Kaisen to Marvel and Genshin Impact, experience every passion in one centralized home.</p>
+            </div>
+            <div class="stat-card" style="text-align: left; padding: 2rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">⚡</div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Real-Time Interactions</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">Instant AJAX heart reactions, threaded commenting architecture, fast autocomplete search, and optimized page speed ensure seamless browsing.</p>
+            </div>
+            <div class="stat-card" style="text-align: left; padding: 2rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">🎨</div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Creator Spotlight</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">Showcase your cosplay progress, publish in-depth chapter breakdowns, and connect directly with fellow creators and storytellers.</p>
+            </div>
+            <div class="stat-card" style="text-align: left; padding: 2rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">🛡️</div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Direct Human Support</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">Have questions, moderation feedback, or partnership ideas? Email founder Alishba Shahid directly at <a href="mailto:marinacaipher09@gmail.com" class="text-primary">marinacaipher09@gmail.com</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Banner -->
+{% if not current_user.is_authenticated %}
+<section class="section-wrapper" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <div class="container">
+        <div style="background: var(--gradient-card); border: 1px solid rgba(108, 92, 231, 0.4); border-radius: var(--radius-lg); padding: 3.5rem 2rem; text-align: center; box-shadow: var(--shadow-glow); position: relative; overflow: hidden;">
+            <div style="position: relative; z-index: 2; max-width: 680px; margin: 0 auto;">
+                <h2 style="font-size: 2.4rem; margin-bottom: 1rem;">Ready to Claim Your Place in the FandomVerse? ✨</h2>
+                <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2rem; line-height: 1.7;">
+                    Join over 25,000 passionate members today. Create your free account, join your favorite fandoms, publish your theories, and connect with fans across the globe.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('signup') }}" class="btn btn-gradient btn-lg glow-btn">
+                        <i class="fas fa-user-plus"></i> Create Free Account
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline btn-lg">
+                        <i class="fas fa-sign-in-alt"></i> Existing Member Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

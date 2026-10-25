@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6c5ce7"/>
+      <stop offset="50%" stop-color="#a29bfe"/>
+      <stop offset="100%" stop-color="#fd79a8"/>
+    </linearGradient>
+    <radialGradient id="avatarGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="70%" stop-color="#6c5ce7" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#6c5ce7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="url(#avatarGlow)"/>
+  <circle cx="60" cy="60" r="50" fill="#161536" stroke="url(#avatarGrad)" stroke-width="3"/>
+  <!-- User silhouette -->
+  <circle cx="60" cy="45" r="18" fill="url(#avatarGrad)"/>
+  <path d="M 28 94 C 28 76, 42 68, 60 68 C 78 68, 92 76, 92 94 Z" fill="url(#avatarGrad)"/>
+  <!-- Little sparkle star -->
+  <polygon points="90,25 93,32 100,35 93,38 90,45 87,38 80,35 87,32" fill="#ffeaa7"/>
+</svg>

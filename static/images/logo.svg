@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6c5ce7"/>
+      <stop offset="50%" style="stop-color:#a29bfe"/>
+      <stop offset="100%" style="stop-color:#fd79a8"/>
+    </linearGradient>
+    <linearGradient id="logoGradReverse" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fd79a8"/>
+      <stop offset="100%" style="stop-color:#6c5ce7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle with gradient -->
+  <circle cx="120" cy="120" r="110" fill="url(#logoGrad)" opacity="0.12"/>
+  <circle cx="120" cy="120" r="95" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Decorative stars / galaxy motif -->
+  <g filter="url(#glow)" opacity="0.7">
+    <circle cx="55" cy="55" r="2.5" fill="#a29bfe"/>
+    <circle cx="185" cy="60" r="2" fill="#fd79a8"/>
+    <circle cx="45" cy="170" r="1.8" fill="#fd79a8"/>
+    <circle cx="190" cy="175" r="2.2" fill="#a29bfe"/>
+    <circle cx="120" cy="35" r="1.5" fill="#dfe6e9"/>
+    <circle cx="75" cy="200" r="1.2" fill="#dfe6e9"/>
+    <circle cx="170" cy="195" r="1.5" fill="#dfe6e9"/>
+    <!-- Larger accent stars -->
+    <polygon points="165,45 167,50 172,50 168,53 170,58 165,55 160,58 162,53 158,50 163,50"
+             fill="#fd79a8" opacity="0.8"/>
+    <polygon points="60,185 62,190 67,190 63,193 65,198 60,195 55,198 57,193 53,190 58,190"
+             fill="#a29bfe" opacity="0.8"/>
+  </g>
+
+  <!-- "F" letter -->
+  <g transform="translate(65, 72)">
+    <path d="M0,0 L50,0 L50,14 L16,14 L16,40 L42,40 L42,54 L16,54 L16,96 L0,96 Z"
+          fill="url(#logoGrad)"/>
+  </g>
+
+  <!-- "V" letter -->
+  <g transform="translate(125, 72)">
+    <path d="M0,0 L18,0 L35,65 L52,0 L70,0 L43,96 L27,96 Z"
+          fill="url(#logoGradReverse)"/>
+  </g>
+
+  <!-- Connecting spark between F and V -->
+  <g filter="url(#glow)">
+    <circle cx="122" cy="115" r="4" fill="#fff" opacity="0.9"/>
+    <circle cx="122" cy="115" r="8" fill="#a29bfe" opacity="0.25"/>
+  </g>
+
+  <!-- Orbital ring / galaxy arc -->
+  <path d="M60,120 Q120,60 180,120" fill="none" stroke="url(#logoGrad)" stroke-width="1.5"
+        stroke-dasharray="4,4" opacity="0.4"/>
+  <path d="M60,120 Q120,180 180,120" fill="none" stroke="url(#logoGradReverse)" stroke-width="1.5"
+        stroke-dasharray="4,4" opacity="0.3"/>
+</svg>

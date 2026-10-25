@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Lost in the Multiverse | FandomVerse{% endblock %}
+
+{% block content %}
+<section class="section-wrapper" style="text-align: center; padding: 6rem 1.5rem;">
+    <div class="container" style="max-width: 650px;">
+        <div style="font-size: 6rem; font-family: var(--font-heading); font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; line-height: 1;">
+            404
+        </div>
+        <h1 style="font-size: 2rem; margin-bottom: 1rem;">Oops! Realm Not Found 🌀</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2.5rem;">
+            It seems this portal has collapsed or shifted into another dimension. The page or fandom realm you are seeking does not exist.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('home') }}" class="btn btn-gradient btn-lg">
+                <i class="fas fa-home"></i> Return to Home Arena
+            </a>
+            <a href="{{ url_for('explore') }}" class="btn btn-outline btn-lg">
+                <i class="fas fa-compass"></i> Explore All Fandoms
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

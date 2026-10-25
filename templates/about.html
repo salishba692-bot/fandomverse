@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}About FandomVerse - Conceived & Made by Alishba Shahid{% endblock %}
+{% block meta_description %}Learn about FandomVerse, the universal interactive community platform made by Alishba Shahid. Discover our mission, lore, tech stack, and future roadmap.{% endblock %}
+
+{% block content %}
+<!-- About Hero -->
+<section class="about-hero">
+    <div class="container">
+        <div class="hero-badge-pill">
+            <span class="hero-badge-dot"></span>
+            <span>Origin Story &amp; Vision</span>
+        </div>
+        <h1 class="hero-title">
+            Uniting Every Pop Culture Galaxy Under One <span class="gradient-text">Verse</span> 🌌
+        </h1>
+        <p class="hero-description">
+            FandomVerse was founded by <strong>Alishba Shahid</strong> out of a deep reverence for storytelling, anime worldbuilding, gaming lore, and the vibrant creativity of fans around the world.
+        </p>
+    </div>
+</section>
+
+<!-- Creator Spotlight Section -->
+<section class="section-wrapper" style="padding-top: 0;">
+    <div class="container">
+        <div class="about-card-spotlight">
+            <div class="creator-spotlight">
+                <div class="creator-avatar-box">
+                    <img src="{{ url_for('static', filename='images/default-avatar.svg') }}" alt="Alishba Shahid - Founder & Lead Architect" class="creator-img">
+                    <div class="badge badge-admin" style="font-size: 0.8rem; padding: 0.35rem 1rem;">
+                        <i class="fas fa-crown"></i> Founder &amp; Architect
+                    </div>
+                </div>
+
+                <div class="creator-bio-content">
+                    <span class="section-tag">Visionary &amp; Creator</span>
+                    <h3>Made by <span class="gradient-text">Alishba Shahid</span></h3>
+                    <p class="creator-tagline">Software Architect &bull; Passionate Fandom Enthusiast &bull; Creative Technologist</p>
+                    <p style="color: #e4e7eb; font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.25rem;">
+                        "Fandom is more than entertainment; it is an emotional anchor and a shared cultural language that spans continents. Whether analyzing the hidden foreshadowing in Attack on Titan, celebrating BTS's poetic lyricism, building complex redstone circuits in Minecraft, or hand-crafting intricate cosplay armor, fans invest incredible artistry and love into what they adore. I built FandomVerse to provide our community with the dedicated, high-tech, and inclusive sanctuary it truly deserves."
+                    </p>
+                    <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                        <a href="mailto:marinacaipher09@gmail.com" class="btn btn-gradient btn-sm">
+                            <i class="fas fa-envelope"></i> Contact: marinacaipher09@gmail.com
+                        </a>
+                        <a href="{{ url_for('explore') }}" class="btn btn-outline btn-sm">
+                            <i class="fas fa-compass"></i> Explore The Platform
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Platform Pillars -->
+        <div class="section-header-centered" style="margin-top: 4rem;">
+            <span class="section-tag">Core Tenets</span>
+            <h2 class="section-title">The Four Pillars of FandomVerse</h2>
+            <p class="section-subtitle">Every feature and architectural choice in FandomVerse is anchored by our commitment to user empowerment.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+            <div class="stat-card" style="text-align: left; padding: 2.25rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">⚔️</div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">1. Safe, Welcoming &amp; Inclusive</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+                    Constructive debates without toxicity. Whether you're a newcomer discovering your first anime or a veteran comic archivist, everyone has an equal voice.
+                </p>
+            </div>
+
+            <div class="stat-card" style="text-align: left; padding: 2.25rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">💎</div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">2. High-Tech Performance</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+                    Built on Flask and SQLAlchemy with asynchronous interactions, real-time debounce autocomplete, responsive layouts, and zero bloat for lightning-quick speeds.
+                </p>
+            </div>
+
+            <div class="stat-card" style="text-align: left; padding: 2.25rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">🎭</div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">3. Art &amp; Craftsmanship Support</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+                    Dedicated tags and styling for fan art, prop making, reviews, and video edits so makers and cosplayers get the recognition they deserve.
+                </p>
+            </div>
+
+            <div class="stat-card" style="text-align: left; padding: 2.25rem;">
+                <div style="font-size: 2.2rem; margin-bottom: 1rem;">🌱</div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem;">4. Creator-Led Evolution</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+                    Continuous updates, feature requests, and community polls. The roadmap is guided directly by our active members and feedback submitted to our team.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tech Stack Transparency -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 3rem 2rem; margin-top: 4rem; text-align: center;">
+            <span class="section-tag">Under the Hood</span>
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">Modern Full-Stack Architecture</h2>
+            <p style="color: var(--text-muted); max-width: 700px; margin: 0 auto 2.5rem; font-size: 1rem;">
+                Engineered for scalability, search engine accessibility, responsiveness across all mobile viewports, and rock-solid relational persistence.
+            </p>
+
+            <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+                <span class="badge" style="background: rgba(108, 92, 231, 0.2); color: #a29bfe; padding: 0.6rem 1.2rem; font-size: 0.85rem;"><i class="fab fa-python"></i> Python 3.14 &amp; Flask</span>
+                <span class="badge" style="background: rgba(0, 206, 201, 0.2); color: #81ecec; padding: 0.6rem 1.2rem; font-size: 0.85rem;"><i class="fas fa-database"></i> SQLite &amp; SQLAlchemy ORM</span>
+                <span class="badge" style="background: rgba(253, 121, 168, 0.2); color: #fd79a8; padding: 0.6rem 1.2rem; font-size: 0.85rem;"><i class="fas fa-shield-alt"></i> Werkzeug &amp; Flask-Login</span>
+                <span class="badge" style="background: rgba(253, 203, 110, 0.2); color: #ffeaa7; padding: 0.6rem 1.2rem; font-size: 0.85rem;"><i class="fas fa-code"></i> Jinja2 &amp; Semantic HTML5</span>
+                <span class="badge" style="background: rgba(0, 184, 148, 0.2); color: #55efc4; padding: 0.6rem 1.2rem; font-size: 0.85rem;"><i class="fas fa-search"></i> Schema.org &amp; SEO Metadata</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

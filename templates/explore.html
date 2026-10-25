@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Fandoms & Communities - FandomVerse{% endblock %}
+{% block meta_description %}Explore hundreds of fan communities across Anime, K-Pop, Video Games, Marvel, Star Wars, Cosplay, and Fantasy Books. Discover your next favorite fandom on FandomVerse.{% endblock %}
+
+{% block content %}
+<section class="section-wrapper" style="padding-top: 3rem;">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="section-header-centered" style="margin-bottom: 2rem;">
+            <span class="section-tag">Directory &amp; Discovery</span>
+            <h1 class="section-title">Explore All Fandom Realms 🔍</h1>
+            <p class="section-subtitle">Discover active pop culture communities, join the discussion, find fellow enthusiasts, and immerse yourself in the universe.</p>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            <!-- Category Pills -->
+            <div class="category-pills-bar" style="margin-bottom: 0; padding-bottom: 0.5rem;">
+                <a href="{{ url_for('explore', category='all', search=search) }}" class="cat-pill {% if current_category == 'all' %}active{% endif %}">
+                    <span>🌈</span> All Categories
+                </a>
+                {% for cat in categories %}
+                <a href="{{ url_for('explore', category=cat.slug, search=search) }}" class="cat-pill {% if current_category == cat.slug %}active{% endif %}">
+                    <span>{{ cat.icon }}</span> {{ cat.name }}
+                </a>
+                {% endfor %}
+            </div>
+
+            <!-- Search Filter Form -->
+            <form action="{{ url_for('explore') }}" method="GET" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <input type="hidden" name="category" value="{{ current_category }}">
+                <div style="position: relative; flex: 1; min-width: 250px;">
+                    <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-dim);"></i>
+                    <input type="text" name="search" value="{{ search or '' }}" placeholder="Filter fandoms by name or keyword..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.6rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: var(--radius-full); color: #fff; font-size: 0.95rem;">
+                </div>
+                <button type="submit" class="btn btn-gradient">
+                    <i class="fas fa-filter"></i> Apply Filter
+                </button>
+                {% if search or current_category != 'all' %}
+                <a href="{{ url_for('explore') }}" class="btn btn-outline">
+                    <i class="fas fa-times"></i> Reset
+                </a>
+                {% endif %}
+            </form>
+        </div>
+
+        <!-- Fandoms Grid -->
+        {% if fandoms.items %}
+        <div class="fandom-grid">
+            {% for fandom in fandoms.items %}
+            <div class="fandom-card">
+                <div class="fandom-card-cover">
+                    <img src="{{ url_for('static', filename='images/default-fandom.svg') }}" alt="{{ fandom.name }}" class="fandom-cover-img" loading="lazy">
+                    <span class="fandom-category-badge">{{ fandom.category | capitalize }}</span>
+                    <div class="fandom-card-avatar">
+                        {{ fandom.icon_emoji }}
+                    </div>
+                </div>
+                <div class="fandom-card-body">
+                    <h3 class="fandom-card-title">{{ fandom.name }}</h3>
+                    <p class="fandom-card-desc">{{ fandom.description }}</p>
+                    <div class="fandom-card-footer">
+                        <span class="fandom-members-count">
+                            <i class="fas fa-users"></i> {{ '{:,}'.format(fandom.member_count) }} fans
+                        </span>
+                        <a href="{{ url_for('fandom_detail', slug=fandom.slug) }}" class="btn btn-sm btn-gradient">
+                            Enter Arena
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Controls -->
+        {% if fandoms.pages > 1 %}
+        <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 3.5rem; flex-wrap: wrap;">
+            {% if fandoms.has_prev %}
+            <a href="{{ url_for('explore', page=fandoms.prev_num, category=current_category, search=search) }}" class="btn btn-outline btn-sm">
+                <i class="fas fa-chevron-left"></i> Previous
+            </a>
+            {% endif %}
+
+            {% for p in fandoms.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if p %}
+                    {% if p == fandoms.page %}
+                    <span class="btn btn-gradient btn-sm" style="pointer-events: none;">{{ p }}</span>
+                    {% else %}
+                    <a href="{{ url_for('explore', page=p, category=current_category, search=search) }}" class="btn btn-outline btn-sm">{{ p }}</a>
+                    {% endif %}
+                {% else %}
+                    <span style="color: var(--text-dim); padding: 0 0.5rem;">…</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if fandoms.has_next %}
+            <a href="{{ url_for('explore', page=fandoms.next_num, category=current_category, search=search) }}" class="btn btn-outline btn-sm">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div style="text-align: center; padding: 5rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg);">
+            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🌌</div>
+            <h3 style="font-size: 1.6rem; margin-bottom: 0.75rem;">No Fandoms Found</h3>
+            <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 1.5rem;">
+                We couldn't locate any communities matching your criteria. Try adjusting your search term or select "All Categories".
+            </p>
+            <a href="{{ url_for('explore') }}" class="btn btn-gradient">Browse All Fandoms</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}{{ fandom.name }} - FandomVerse Realm{% endblock %}
+{% block meta_description %}Join the {{ fandom.name }} fandom realm on FandomVerse! Discuss latest news, share theories, vote on posts, and connect with fellow {{ fandom.name }} fans.{% endblock %}
+
+{% block content %}
+<section class="section-wrapper" style="padding-top: 2rem;">
+    <div class="container">
+        <!-- Fandom Banner Header -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2.5rem; box-shadow: var(--shadow-card);">
+            <div style="height: 180px; background: linear-gradient(135deg, #1b1640 0%, #3a2266 50%, #0d0a27 100%); position: relative; padding: 1.5rem; display: flex; align-items: flex-end;">
+                <img src="{{ url_for('static', filename='images/default-fandom.svg') }}" alt="{{ fandom.name }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45;" loading="lazy">
+                <span class="fandom-category-badge" style="position: absolute; top: 1rem; right: 1rem;">
+                    {{ fandom.category | capitalize }}
+                </span>
+                <div style="width: 76px; height: 76px; border-radius: 50%; background: #12102b; border: 4px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; position: absolute; bottom: -38px; left: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.6); z-index: 2;">
+                    {{ fandom.icon_emoji }}
+                </div>
+            </div>
+
+            <div style="padding: 3rem 2rem 1.75rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
+                <div style="flex: 1; min-width: 280px;">
+                    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #fff;">{{ fandom.name }}</h1>
+                    <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; max-width: 800px; margin-bottom: 1rem;">
+                        {{ fandom.description }}
+                    </p>
+                    <div style="display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--text-dim); flex-wrap: wrap;">
+                        <span><i class="fas fa-users" style="color: var(--primary-light);"></i> {{ '{:,}'.format(fandom.member_count) }} Devoted Members</span>
+                        <span><i class="fas fa-newspaper" style="color: var(--accent-pink);"></i> {{ fandom.posts.count() }} Discussions</span>
+                        <span><i class="fas fa-tag" style="color: var(--accent-cyan);"></i> Category: {{ fandom.category | capitalize }}</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                    {% if current_user.is_authenticated %}
+                        <form action="{{ url_for('join_fandom', slug=fandom.slug) }}" method="POST">
+                            {% if is_member %}
+                                <button type="submit" class="btn btn-outline btn-sm" style="border-color: #ff7675; color: #ff7675;">
+                                    <i class="fas fa-check"></i> Joined (Leave)
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-gradient btn-sm glow-btn">
+                                    <i class="fas fa-plus"></i> Join Fandom
+                                </button>
+                            {% endif %}
+                        </form>
+                        <a href="{{ url_for('create_post', fandom_id=fandom.id) }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-pen"></i> Post Here
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('signup') }}" class="btn btn-gradient btn-sm">
+                            <i class="fas fa-user-plus"></i> Join Fandom
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Sort Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <h2 style="font-size: 1.5rem;">Community Feed ⚡</h2>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="{{ url_for('fandom_detail', slug=fandom.slug, sort='newest') }}" class="btn btn-sm {% if sort == 'newest' %}btn-gradient{% else %}btn-outline{% endif %}">
+                    <i class="fas fa-clock"></i> Newest
+                </a>
+                <a href="{{ url_for('fandom_detail', slug=fandom.slug, sort='popular') }}" class="btn btn-sm {% if sort == 'popular' %}btn-gradient{% else %}btn-outline{% endif %}">
+                    <i class="fas fa-fire"></i> Most Viewed
+                </a>
+            </div>
+        </div>
+
+        <!-- Posts Feed -->
+        {% if posts.items %}
+        <div class="posts-grid">
+            {% for post in posts.items %}
+            <article class="post-card">
+                <div class="post-card-header">
+                    <span class="post-type-badge badge-{{ post.post_type }}">{{ post.post_type | capitalize }}</span>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">
+                        {{ post.created_at.strftime('%b %d, %Y') }}
+                    </span>
+                </div>
+
+                <h3 class="post-card-title">
+                    <a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a>
+                </h3>
+
+                <p class="post-card-preview">{{ post.content }}</p>
+
+                <div class="post-card-author-bar">
+                    <div class="author-info">
+                        <img src="{{ post.author.avatar_url or url_for('static', filename='images/default-avatar.svg') }}" alt="{{ post.author.display_name or post.author.username }}" class="author-avatar" loading="lazy">
+                        <div>
+                            <span class="author-name">{{ post.author.display_name or post.author.username }}</span>
+                        </div>
+                    </div>
+
+                    <div class="post-metrics">
+                        <span class="metric-item" title="Views"><i class="fas fa-eye"></i> {{ post.views }}</span>
+                        <button class="like-btn {% if current_user.is_authenticated and post.likes.filter_by(user_id=current_user.id).first() %}liked{% endif %}" data-post-id="{{ post.id }}" aria-label="Like post">
+                            <i class="{% if current_user.is_authenticated and post.likes.filter_by(user_id=current_user.id).first() %}fas{% else %}far{% endif %} fa-heart"></i>
+                            <span class="like-count">{{ post.like_count }}</span>
+                        </button>
+                        <a href="{{ url_for('post_detail', post_id=post.id) }}" class="metric-item text-muted" title="Comments">
+                            <i class="fas fa-comment"></i> {{ post.comment_count }}
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if posts.pages > 1 %}
+        <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 3.5rem; flex-wrap: wrap;">
+            {% if posts.has_prev %}
+            <a href="{{ url_for('fandom_detail', slug=fandom.slug, page=posts.prev_num, sort=sort) }}" class="btn btn-outline btn-sm">
+                <i class="fas fa-chevron-left"></i> Previous
+            </a>
+            {% endif %}
+
+            {% for p in posts.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if p %}
+                    {% if p == posts.page %}
+                    <span class="btn btn-gradient btn-sm" style="pointer-events: none;">{{ p }}</span>
+                    {% else %}
+                    <a href="{{ url_for('fandom_detail', slug=fandom.slug, page=p, sort=sort) }}" class="btn btn-outline btn-sm">{{ p }}</a>
+                    {% endif %}
+                {% else %}
+                    <span style="color: var(--text-dim); padding: 0 0.5rem;">…</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if posts.has_next %}
+            <a href="{{ url_for('fandom_detail', slug=fandom.slug, page=posts.next_num, sort=sort) }}" class="btn btn-outline btn-sm">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div style="text-align: center; padding: 4.5rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">✍️</div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">No Posts in {{ fandom.name }} Yet</h3>
+            <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem;">
+                Be the pioneer Scout or Hero of this realm! Start the very first theory or discussion thread now.
+            </p>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('create_post') }}" class="btn btn-gradient">Start First Thread</a>
+            {% else %}
+            <a href="{{ url_for('signup') }}" class="btn btn-gradient">Sign Up to Post</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

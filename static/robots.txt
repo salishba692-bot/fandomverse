@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /profile/edit
+Disallow: /post/new
+
+Sitemap: https://fandomverse.org/sitemap.xml

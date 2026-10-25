@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Join FandomVerse{% endblock %}
+{% block meta_description %}Create your free FandomVerse account and join thousands of fans. Connect with anime, K-Pop, gaming, movie, and comic communities today!{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-container">
+        <!-- Decorative Side -->
+        <div class="auth-decoration">
+            <div class="auth-deco-content">
+                <div class="floating-emojis">
+                    <span class="float-emoji" style="--delay: 0s; --x: 20%; --y: 10%;">🎌</span>
+                    <span class="float-emoji" style="--delay: 0.5s; --x: 70%; --y: 20%;">🎮</span>
+                    <span class="float-emoji" style="--delay: 1s; --x: 30%; --y: 60%;">💜</span>
+                    <span class="float-emoji" style="--delay: 1.5s; --x: 80%; --y: 70%;">⚡</span>
+                    <span class="float-emoji" style="--delay: 2s; --x: 50%; --y: 40%;">🦸</span>
+                    <span class="float-emoji" style="--delay: 2.5s; --x: 15%; --y: 80%;">🎬</span>
+                    <span class="float-emoji" style="--delay: 3s; --x: 65%; --y: 50%;">🎵</span>
+                    <span class="float-emoji" style="--delay: 3.5s; --x: 40%; --y: 25%;">🗡️</span>
+                    <span class="float-emoji" style="--delay: 4s; --x: 85%; --y: 45%;">🏴‍☠️</span>
+                    <span class="float-emoji" style="--delay: 4.5s; --x: 25%; --y: 90%;">🎭</span>
+                </div>
+                <h2 class="auth-deco-title">Welcome to the<br>FandomVerse! 🌌</h2>
+                <p class="auth-deco-text">Join a thriving community of passionate fans from all around the world. Share theories, create fan art, discuss your favorite shows, and make lasting connections.</p>
+                <div class="auth-deco-stats">
+                    <div class="deco-stat">
+                        <span class="deco-stat-num">16+</span>
+                        <span class="deco-stat-label">Fandoms</span>
+                    </div>
+                    <div class="deco-stat">
+                        <span class="deco-stat-num">25K+</span>
+                        <span class="deco-stat-label">Members</span>
+                    </div>
+                    <div class="deco-stat">
+                        <span class="deco-stat-num">100K+</span>
+                        <span class="deco-stat-label">Posts</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div class="auth-form-wrapper">
+            <div class="auth-form-content">
+                <div class="auth-logo">
+                    <a href="{{ url_for('home') }}">🌌 FandomVerse</a>
+                </div>
+                <h1 class="auth-title">Join FandomVerse 🚀</h1>
+                <p class="auth-subtitle">Create your account and dive into the ultimate fandom community!</p>
+
+                <!-- Social Sign Up -->
+                <div class="social-auth">
+                    <button class="social-btn google-btn" type="button" disabled>
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="social-btn discord-btn" type="button" disabled>
+                        <i class="fab fa-discord"></i> Discord
+                    </button>
+                    <button class="social-btn twitter-btn" type="button" disabled>
+                        <i class="fab fa-twitter"></i> Twitter
+                    </button>
+                </div>
+
+                <div class="auth-divider">
+                    <span>or sign up with email</span>
+                </div>
+
+                <form method="POST" action="{{ url_for('signup') }}" class="auth-form" id="signupForm" novalidate>
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> Username</label>
+                        <input type="text" id="username" name="username" required minlength="3" maxlength="30"
+                               placeholder="Choose a unique username" autocomplete="username"
+                               value="{{ request.form.get('username', '') }}">
+                        <span class="form-hint">3-30 characters, letters, numbers, and underscores</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="display_name"><i class="fas fa-id-badge"></i> Display Name <span class="optional">(optional)</span></label>
+                        <input type="text" id="display_name" name="display_name" maxlength="100"
+                               placeholder="How should we call you?"
+                               value="{{ request.form.get('display_name', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="email" name="email" required
+                               placeholder="your@email.com" autocomplete="email"
+                               value="{{ request.form.get('email', '') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" name="password" required minlength="8"
+                                   placeholder="At least 8 characters" autocomplete="new-password">
+                            <button type="button" class="password-toggle" onclick="togglePassword('password', this)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <span class="strength-text" id="strengthText">Password strength</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="confirm_password" name="confirm_password" required
+                                   placeholder="Re-enter your password" autocomplete="new-password">
+                            <button type="button" class="password-toggle" onclick="togglePassword('confirm_password', this)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="password-match" id="passwordMatch"></span>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#" class="link">Terms of Service</a> & <a href="#" class="link">Community Guidelines</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block auth-submit">
+                        Create Account 🎉
+                    </button>
+                </form>
+
+                <p class="auth-switch">
+                    Already have an account? <a href="{{ url_for('login') }}" class="link">Log In</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Password strength indicator
+document.getElementById('password').addEventListener('input', function() {
+    const password = this.value;
+    const fill = document.getElementById('strengthFill');
+    const text = document.getElementById('strengthText');
+    let strength = 0;
+    
+    if (password.length >= 8) strength++;
+    if (password.length >= 12) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+    
+    const levels = ['', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+    const colors = ['', '#e74c3c', '#e67e22', '#f39c12', '#27ae60', '#00b894'];
+    const widths = ['0%', '20%', '40%', '60%', '80%', '100%'];
+    
+    fill.style.width = widths[strength];
+    fill.style.background = colors[strength];
+    text.textContent = levels[strength] || 'Password strength';
+    text.style.color = colors[strength];
+});
+
+// Password match check
+document.getElementById('confirm_password').addEventListener('input', function() {
+    const match = document.getElementById('passwordMatch');
+    const password = document.getElementById('password').value;
+    
+    if (this.value === '') {
+        match.textContent = '';
+    } else if (this.value === password) {
+        match.textContent = '✓ Passwords match';
+        match.style.color = '#00b894';
+    } else {
+        match.textContent = '✗ Passwords do not match';
+        match.style.color = '#e74c3c';
+    }
+});
+
+// Password toggle
+function togglePassword(fieldId, btn) {
+    const field = document.getElementById(fieldId);
+    const icon = btn.querySelector('i');
+    if (field.type === 'password') {
+        field.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        field.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
+{% endblock %}

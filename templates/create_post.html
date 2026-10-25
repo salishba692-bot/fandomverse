@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Create New Thread - FandomVerse{% endblock %}
+{% block meta_description %}Publish a new discussion, theory, cosplay photo, or review on FandomVerse. Share your thoughts with passionate fan communities.{% endblock %}
+
+{% block content %}
+<section class="section-wrapper" style="padding-top: 3rem;">
+    <div class="container" style="max-width: 860px;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-card);">
+            <div style="margin-bottom: 2rem;">
+                <span class="section-tag">Community Contribution</span>
+                <h1 style="font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem;">Start a New Discussion ✍️</h1>
+                <p style="color: var(--text-muted); font-size: 1rem;">
+                    Share your theories, review an episode, analyze character dynamics, or showcase your creative cosplay with the FandomVerse community.
+                </p>
+            </div>
+
+            <form action="{{ url_for('create_post') }}" method="POST" id="createPostForm">
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="postTitle"><i class="fas fa-heading"></i> Post Title</label>
+                    <input type="text" id="postTitle" name="title" placeholder="e.g. Gojo's Domain Expansion Explained: The Science of Infinity" required maxlength="200" value="{{ request.form.get('title', '') }}">
+                    <span class="form-hint">Make it intriguing and relevant to the fandom (Max 200 chars).</span>
+                </div>
+
+                <!-- Fandom Selection & Post Type -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                    <div class="form-group">
+                        <label for="fandomSelect"><i class="fas fa-compass"></i> Select Fandom Realm</label>
+                        <select id="fandomSelect" name="fandom_id" required>
+                            <option value="">-- Choose Community --</option>
+                            {% for f in fandoms %}
+                            <option value="{{ f.id }}" {% if request.args.get('fandom_id', type=int) == f.id %}selected{% endif %}>
+                                {{ f.icon_emoji }} {{ f.name }} ({{ f.category | capitalize }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postTypeSelect"><i class="fas fa-filter"></i> Discussion Category</label>
+                        <select id="postTypeSelect" name="post_type" required>
+                            <option value="discussion">💬 General Discussion</option>
+                            <option value="theory">🔮 Fan Theory / Deep Dive</option>
+                            <option value="review">⭐ Review / Critique</option>
+                            <option value="fanart">🎨 Fan Art Showcase</option>
+                            <option value="cosplay">🎭 Cosplay / Crafting</option>
+                            <option value="meme">😂 Humor &amp; Memes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Content Body -->
+                <div class="form-group">
+                    <label for="postContent"><i class="fas fa-align-left"></i> Content / Lore / Explanation</label>
+                    <textarea id="postContent" name="content" rows="10" placeholder="Type your full analysis, theories, or questions here. Be descriptive and engaging so fellow fans can build upon your ideas..." required>{{ request.form.get('content', '') }}</textarea>
+                    <span class="form-hint">Rich discussions generate higher upvotes and feature opportunities!</span>
+                </div>
+
+                <!-- Tags -->
+                <div class="form-group">
+                    <label for="postTags"><i class="fas fa-tags"></i> Tags (Comma Separated)</label>
+                    <input type="text" id="postTags" name="tags" placeholder="e.g. theory, spoilers, season4, gojo, jujutsukaisen" value="{{ request.form.get('tags', '') }}">
+                    <span class="form-hint">Help other fans discover your post through tags.</span>
+                </div>
+
+                <!-- Submit and Cancel -->
+                <div style="display: flex; gap: 1rem; align-items: center; justify-content: flex-end; margin-top: 2rem;">
+                    <a href="{{ url_for('home') }}" class="btn btn-outline">Cancel</a>
+                    <button type="submit" class="btn btn-gradient glow-btn">
+                        <i class="fas fa-paper-plane"></i> Publish to FandomVerse
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

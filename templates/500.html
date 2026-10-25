@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Anomaly | FandomVerse{% endblock %}
+
+{% block content %}
+<section class="section-wrapper" style="text-align: center; padding: 6rem 1.5rem;">
+    <div class="container" style="max-width: 650px;">
+        <div style="font-size: 6rem; font-family: var(--font-heading); font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; line-height: 1;">
+            500
+        </div>
+        <h1 style="font-size: 2rem; margin-bottom: 1rem;">Multiverse Quantum Error 💥</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2.5rem;">
+            An unexpected disruption occurred in our space-time warp engines. Our engineering scouts have been notified and are resolving the anomaly.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('home') }}" class="btn btn-gradient btn-lg">
+                <i class="fas fa-home"></i> Return to Safety (Home)
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline btn-lg">
+                <i class="fas fa-envelope"></i> Report Glitch to Alishba
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

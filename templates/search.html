@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results for "{{ query }}" - FandomVerse{% endblock %}
+{% block meta_description %}Search results across all fandom realms, theories, reviews, and users on FandomVerse for {{ query }}.{% endblock %}
+
+{% block content %}
+<section class="section-wrapper" style="padding-top: 3rem;">
+    <div class="container">
+        <!-- Search Header -->
+        <div style="max-width: 760px; margin: 0 auto 3rem; text-align: center;">
+            <span class="section-tag">Universal Explorer</span>
+            <h1 class="section-title" style="margin-bottom: 1rem;">
+                Search Results for <span class="gradient-text">"{{ query }}"</span>
+            </h1>
+
+            <form action="{{ url_for('search') }}" method="GET" style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search again across all fandoms..." style="flex: 1; padding: 0.85rem 1.25rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border-glass); border-radius: var(--radius-full); color: #fff; font-size: 1rem;">
+                <button type="submit" class="btn btn-gradient">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+        {% if fandoms or posts or users %}
+            <!-- Matching Fandoms -->
+            {% if fandoms %}
+            <div style="margin-bottom: 3.5rem;">
+                <div class="section-header">
+                    <div>
+                        <span class="section-tag">Communities</span>
+                        <h2 style="font-size: 1.6rem; color: #fff;">Fandom Realms ({{ fandoms | length }})</h2>
+                    </div>
+                </div>
+
+                <div class="fandom-grid">
+                    {% for fandom in fandoms %}
+                    <div class="fandom-card">
+                        <div class="fandom-card-cover">
+                            <img src="{{ url_for('static', filename='images/default-fandom.svg') }}" alt="{{ fandom.name }}" class="fandom-cover-img" loading="lazy">
+                            <span class="fandom-category-badge">{{ fandom.category | capitalize }}</span>
+                            <div class="fandom-card-avatar">{{ fandom.icon_emoji }}</div>
+                        </div>
+                        <div class="fandom-card-body">
+                            <h3 class="fandom-card-title">{{ fandom.name }}</h3>
+                            <p class="fandom-card-desc">{{ fandom.description }}</p>
+                            <div class="fandom-card-footer">
+                                <span class="fandom-members-count"><i class="fas fa-users"></i> {{ '{:,}'.format(fandom.member_count) }} fans</span>
+                                <a href="{{ url_for('fandom_detail', slug=fandom.slug) }}" class="btn btn-sm btn-gradient">Enter Arena</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Matching Posts -->
+            {% if posts %}
+            <div style="margin-bottom: 3.5rem;">
+                <div class="section-header">
+                    <div>
+                        <span class="section-tag">Discussions</span>
+                        <h2 style="font-size: 1.6rem; color: #fff;">Community Threads ({{ posts | length }})</h2>
+                    </div>
+                </div>
+
+                <div class="posts-grid">
+                    {% for post in posts %}
+                    <article class="post-card">
+                        <div class="post-card-header">
+                            <a href="{{ url_for('fandom_detail', slug=post.fandom.slug) }}" class="post-fandom-link">
+                                <span>{{ post.fandom.icon_emoji }}</span> {{ post.fandom.name }}
+                            </a>
+                            <span class="post-type-badge badge-{{ post.post_type }}">{{ post.post_type | capitalize }}</span>
+                        </div>
+                        <h3 class="post-card-title">
+                            <a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a>
+                        </h3>
+                        <p class="post-card-preview">{{ post.content }}</p>
+                        <div class="post-card-author-bar">
+                            <div class="author-info">
+                                <img src="{{ post.author.avatar_url or url_for('static', filename='images/default-avatar.svg') }}" alt="{{ post.author.display_name or post.author.username }}" class="author-avatar" loading="lazy">
+                                <span class="author-name">{{ post.author.display_name or post.author.username }}</span>
+                            </div>
+                            <div class="post-metrics">
+                                <span class="metric-item"><i class="fas fa-eye"></i> {{ post.views }}</span>
+                                <span class="metric-item"><i class="fas fa-heart text-danger"></i> {{ post.like_count }}</span>
+                                <span class="metric-item"><i class="fas fa-comment"></i> {{ post.comment_count }}</span>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Matching Users -->
+            {% if users %}
+            <div>
+                <div class="section-header">
+                    <div>
+                        <span class="section-tag">Fans</span>
+                        <h2 style="font-size: 1.6rem; color: #fff;">Community Members ({{ users | length }})</h2>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;">
+                    {% for user in users %}
+                    <a href="{{ url_for('profile', username=user.username) }}" style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.25rem; display: flex; align-items: center; gap: 1rem; transition: var(--transition-fast);">
+                        <img src="{{ user.avatar_url or url_for('static', filename='images/default-avatar.svg') }}" alt="{{ user.display_name or user.username }}" style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <strong style="color: #fff; display: block;">{{ user.display_name or user.username }}</strong>
+                            <span style="color: var(--primary-light); font-size: 0.82rem;">@{{ user.username }}</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        {% else %}
+            <!-- No Results State -->
+            <div style="text-align: center; padding: 5rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); max-width: 700px; margin: 0 auto;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🔭</div>
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.75rem;">No Echoes Found in the Multiverse</h2>
+                <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 2rem;">
+                    We couldn't find any fandoms, threads, or members matching "{{ query }}". Try searching for popular topics like "Attack on Titan", "BTS", "Marvel", or "Genshin".
+                </p>
+                <a href="{{ url_for('explore') }}" class="btn btn-gradient">Browse All Fandoms</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
