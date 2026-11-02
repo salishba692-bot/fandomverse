@@ -216,9 +216,7 @@ def inject_globals():
 @app.route('/')
 def home():
     """Landing page with featured fandoms and trending posts."""
-    featured_fandoms = Fandom.query.filter_by(is_featured=True).limit(8).all()
-    if not featured_fandoms:
-        featured_fandoms = Fandom.query.order_by(Fandom.member_count.desc()).limit(8).all()
+    featured_fandoms = Fandom.query.order_by(Fandom.member_count.desc()).limit(8).all()
 
     recent_posts = Post.query.order_by(Post.created_at.desc()).limit(10).all()
     trending_posts = Post.query.order_by(Post.views.desc()).limit(6).all()
@@ -380,6 +378,8 @@ def join_fandom(slug):
 @login_required
 def create_post():
     """Create a new post."""
+    selected_fandom_id = request.args.get('fandom_id', type=int)
+
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         content = request.form.get('content', '').strip()
@@ -389,7 +389,7 @@ def create_post():
         if not title or not content or not fandom_id:
             flash('Please fill in all required fields.', 'danger')
             fandoms = Fandom.query.order_by(Fandom.name).all()
-            return render_template('create_post.html', fandoms=fandoms)
+            return render_template('create_post.html', fandoms=fandoms, selected_fandom_id=selected_fandom_id)
 
         fandom = Fandom.query.get_or_404(fandom_id)
         post = Post(
@@ -418,7 +418,7 @@ def create_post():
         return redirect(url_for('post_detail', post_id=post.id))
 
     fandoms = Fandom.query.order_by(Fandom.name).all()
-    return render_template('create_post.html', fandoms=fandoms)
+    return render_template('create_post.html', fandoms=fandoms, selected_fandom_id=selected_fandom_id)
 
 
 @app.route('/post/<int:post_id>')
@@ -691,6 +691,8 @@ def seed_database():
     ]
 
     for data in fandoms_data:
+        if 'cover_image' not in data:
+            data['cover_image'] = f'/static/images/fandoms/{data["slug"]}.jpg'
         fandom = Fandom(**data)
         db.session.add(fandom)
 
@@ -743,7 +745,8 @@ def seed_database():
 
 # ── Main ───────────────────────────────────────────────────────────────────
 if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
     with app.app_context():
         db.create_all()
         seed_database()
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=port, debug=False)

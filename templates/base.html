@@ -101,7 +101,10 @@
             <!-- Brand Logo -->
             <a href="{{ url_for('home') }}" class="brand-logo" aria-label="FandomVerse Home">
                 <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="FandomVerse Logo" class="brand-img">
-                <span class="brand-text">Fandom<span class="gradient-text">Verse</span></span>
+                <div class="brand-text-wrapper">
+                    <span class="brand-text">Fandom<span class="gradient-text">Verse</span></span>
+                    <span class="brand-tagline">Where Fandoms Unite 🌌</span>
+                </div>
             </a>
 
             <!-- Live Search Bar -->
@@ -207,7 +210,10 @@
             <div class="mobile-drawer-header">
                 <a href="{{ url_for('home') }}" class="brand-logo">
                     <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="brand-img">
-                    <span class="brand-text">Fandom<span class="gradient-text">Verse</span></span>
+                    <div class="brand-text-wrapper">
+                        <span class="brand-text">Fandom<span class="gradient-text">Verse</span></span>
+                        <span class="brand-tagline">Where Fandoms Unite 🌌</span>
+                    </div>
                 </a>
                 <button class="mobile-close-btn" id="mobileCloseBtn"><i class="fas fa-times"></i></button>
             </div>

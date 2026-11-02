@@ -30,7 +30,7 @@
                         <select id="fandomSelect" name="fandom_id" required>
                             <option value="">-- Choose Community --</option>
                             {% for f in fandoms %}
-                            <option value="{{ f.id }}" {% if request.args.get('fandom_id', type=int) == f.id %}selected{% endif %}>
+                            <option value="{{ f.id }}" {% if (request.args.get('fandom_id')|int) == f.id or selected_fandom_id == f.id %}selected{% endif %}>
                                 {{ f.icon_emoji }} {{ f.name }} ({{ f.category | capitalize }})
                             </option>
                             {% endfor %}

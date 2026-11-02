@@ -280,12 +280,26 @@ img {
 .brand-logo:hover .brand-img {
     transform: rotate(-10deg) scale(1.1);
 }
+.brand-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+}
 .brand-text {
     font-family: var(--font-heading);
-    font-size: 1.45rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: #ffffff;
     letter-spacing: -0.5px;
+}
+.brand-tagline {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--accent-pink);
+    opacity: 0.95;
+    margin-top: 1px;
 }
 
 /* Search Bar in Header */
@@ -1066,12 +1080,21 @@ img {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(108, 92, 231, 0.2);
 }
 .fandom-card-cover {
-    height: 120px;
+    height: 175px;
     background: linear-gradient(135deg, #1b1640 0%, #301f56 50%, #110e2b 100%);
     position: relative;
     padding: 1rem;
     display: flex;
     align-items: flex-end;
+    overflow: hidden;
+}
+.fandom-card-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(11, 10, 29, 0.92) 0%, rgba(11, 10, 29, 0.3) 55%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
 }
 .fandom-cover-img {
     position: absolute;
@@ -1079,38 +1102,54 @@ img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.6;
+    opacity: 0.92;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+.fandom-card:hover .fandom-cover-img {
+    transform: scale(1.09);
+    opacity: 1;
 }
 .fandom-category-badge {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: rgba(11, 10, 29, 0.85);
-    backdrop-filter: blur(8px);
-    padding: 0.25rem 0.75rem;
+    background: rgba(11, 10, 29, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0.3rem 0.85rem;
     border-radius: var(--radius-full);
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary-light);
-    border: 1px solid var(--border-glass);
+    border: 1px solid rgba(108, 92, 231, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    letter-spacing: 0.5px;
 }
 .fandom-card-avatar {
-    width: 58px;
-    height: 58px;
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
-    background: #12102b;
+    background: #141133;
     border: 3px solid var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 2rem;
     position: absolute;
-    bottom: -29px;
+    bottom: -31px;
     left: 1.25rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.7), 0 0 18px rgba(108, 92, 231, 0.45);
+    z-index: 2;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fandom-card:hover .fandom-card-avatar {
+    transform: scale(1.12) rotate(6deg);
+    border-color: var(--accent-pink);
+    box-shadow: 0 4px 25px rgba(0,0,0,0.8), 0 0 25px rgba(253, 121, 168, 0.6);
 }
 .fandom-card-body {
-    padding: 2.25rem 1.25rem 1.25rem;
+    padding: 2.6rem 1.35rem 1.35rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -2089,4 +2128,169 @@ img {
     .post-detail-card, .comments-section {
         padding: 1.5rem;
     }
+}
+
+/* ── Profile & Extended Components Styling ───────────────────────────── */
+.fandom-badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.fandom-badge-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1.15rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    color: #fff;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+.fandom-badge-card:hover {
+    background: rgba(108, 92, 231, 0.2);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(108, 92, 231, 0.3);
+    color: #fff;
+}
+.fandom-badge-emoji {
+    font-size: 1.6rem;
+}
+.fandom-badge-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Post list in profile */
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 1rem;
+}
+.post-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+.post-list-item:hover {
+    background: rgba(108, 92, 231, 0.15);
+    border-color: rgba(108, 92, 231, 0.4);
+    transform: translateX(4px);
+    color: #fff;
+}
+.post-list-info {
+    flex: 1;
+}
+.post-list-title {
+    font-size: 1.1rem;
+    margin: 0.35rem 0 0.5rem;
+    color: #fff;
+}
+.post-list-meta {
+    display: flex;
+    gap: 1.25rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+.post-list-arrow {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-left: 1rem;
+    transition: transform var(--transition-fast);
+}
+.post-list-item:hover .post-list-arrow {
+    color: var(--primary-light);
+    transform: translateX(3px);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--border-glass);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+}
+
+/* Edit profile form card */
+.form-page-wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+}
+.form-page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.form-page-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.4rem;
+}
+.form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-card);
+}
+.avatar-edit-section {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+.edit-avatar-preview {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--primary);
+    margin: 0 auto 0.5rem;
+    object-fit: cover;
+}
+.avatar-hint {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+.char-counter {
+    text-align: right;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 0.25rem;
+}
+.form-info-readonly {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+.info-item label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+.info-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+}
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
 }

@@ -51,7 +51,7 @@
             {% for fandom in fandoms.items %}
             <div class="fandom-card">
                 <div class="fandom-card-cover">
-                    <img src="{{ url_for('static', filename='images/default-fandom.svg') }}" alt="{{ fandom.name }}" class="fandom-cover-img" loading="lazy">
+                    <img src="{{ fandom.cover_image }}" alt="{{ fandom.name }}" class="fandom-cover-img" onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/default-fandom.svg') }}';" loading="lazy">
                     <span class="fandom-category-badge">{{ fandom.category | capitalize }}</span>
                     <div class="fandom-card-avatar">
                         {{ fandom.icon_emoji }}
