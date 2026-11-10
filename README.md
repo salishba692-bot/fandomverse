@@ -84,14 +84,9 @@ fandomverse/
     ├── 404.html             # Not found
     └── 500.html             # Server error
 ```
-
-## 🎮 Default Login
-
-After first run, a demo admin account is created:
-- **Username:** alishba_shahid
-- **Email:** marinacaipher09@gmail.com
-- **Password:** FandomVerse2024!
-
+if you want another fandom centent plz visit here .
+https://brightframe-web-studio.lovable.app/
+##
 ## 📧 Contact
 
 - **Email:** marinacaipher09@gmail.com
